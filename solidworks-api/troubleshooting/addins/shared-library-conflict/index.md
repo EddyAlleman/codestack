@@ -11,17 +11,17 @@ There are several SOLIDWORKS add-ins (usually from the same supplier) which cann
 
 ## Cause
 
-When same library (even of different versions) are used by different projects within the same application domain (e.g. add-in in SOLIDWORKS) .NET framework will use the cached library. The cached library will be the one which is accessed first. For example the library can be accessed when add-in button is clicked.
+When the same library (even of different versions) is used by different projects within the same application domain (e.g. add-in in SOLIDWORKS) .NET framework will use the cached library. The cached library will be the one which is accessed first. For example the library can be accessed when an add-in button is clicked.
 
-This results in the issues when library is not backward and forward compatible (i.e. version is supported by both newer and older applications). This is usually not the case for the libraries as behaviour may be changed, bugs fixed or regression issues introduced in the newer versions of library.
+This results in issues when the library is not backward and forward compatible (i.e. version is supported by both newer and older applications). This is usually not the case for the libraries as behaviour may be changed, bugs fixed or regression issues introduced in the newer versions of library.
 
-This introduces the possible conflicts when resolving the assembly references.
+This introduces possible conflicts when resolving assembly references.
 
 ## Resolution
 
 Sign conflicting assembly with a [strong name](https://docs.microsoft.com/en-us/dotnet/framework/app-domains/how-to-sign-an-assembly-with-a-strong-name). In this cases version specific assemblies will be used which will resolve conflict.
 
-Hoverer, it might be the case where main project A refers the shared dll B with version 1 and also refers dll C which refers dll B with version 2, which means that it is required to have version 1 and 2 of B loaded at the same time. As dlls are usually compiled in the same directory it is either required to add them to different folders or use [Binding Redirect](https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/bindingredirect-element) element to redirect different versions of the shared library:
+Howerer, this might be the case where main project A refers the shared dll B with version 1 and also refers dll C which refers dll B with version 2, which means that it is required to have version 1 and 2 of B loaded at the same time. As dlls are usually compiled in the same directory it is either required to add them to different folders or use [Binding Redirect](https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/bindingredirect-element) element to redirect different versions of the shared library:
 
 Add the following snippet to **app.config** file:
 
@@ -57,4 +57,4 @@ Video Demonstration:
 
 Be aware of backward compatibility when using binding redirect, i.e. redirecting from version 1 to 2 requires backward compatibility, otherwise this solution will not work.
 
-If shared assembly is not signed with a strong name it is possible to resolve the conflict at runtime by capturing the [AppDomain::AssemblyResole](https://docs.microsoft.com/en-us/dotnet/api/system.appdomain.assemblyresolve?view=netframework-4.8) event and returning the resolved assembly from the method handler.
+If the shared assembly is not signed with a strong name it is possible to resolve the conflict at runtime by capturing the [AppDomain::AssemblyResole](https://docs.microsoft.com/en-us/dotnet/api/system.appdomain.assemblyresolve?view=netframework-4.8) event and returning the resolved assembly from the method handler.
