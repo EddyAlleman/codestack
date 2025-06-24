@@ -1,5 +1,5 @@
 ---
-caption: Apply Render Materia;
+caption: Apply Render Material;
 title: Generate material variants configuration using SOLIDWORKS API
 description: VBA macro to generate a series of configuration with a custom appearance
 image: configurations.png
